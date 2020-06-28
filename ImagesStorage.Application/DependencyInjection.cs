@@ -14,6 +14,8 @@ namespace ImagesStorage.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+            services.AddScoped<IGetUserByUserNameUseCase, GetUserByUserNameUseCase>();
+            services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
 
             return services;
         }
