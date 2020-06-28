@@ -20,6 +20,7 @@ namespace ImagesStorage.Application.UseCases
         {
             _userRepository = userRepository;
         }
+
         public async Task<bool> Handle(RegisterUserRequest message, IOutputPort<RegisterUserResponse> outputPort)
         {
             var response = await _userRepository.CreateUserAsync(new User(message.FirstName, message.LastName, message.Email, message.UserName), message.Password);
