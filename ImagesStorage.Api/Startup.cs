@@ -1,5 +1,6 @@
 using AspNetCore.Identity.MongoDbCore.Models;
 using AutoMapper;
+using ImagesStorage.Api.Presenters;
 using ImagesStorage.Application;
 using ImagesStorage.Application.Config;
 using ImagesStorage.Infrastructure;
@@ -24,12 +25,24 @@ namespace ImagesStorage.Api
 
         public IConfiguration Configuration { get; }
 
+        readonly string CORS = "ImagesStoreCORS";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
 
             services.AddApplication();
+
+            services.AddScoped(typeof(RegisterUserPresenter));
+            services.AddScoped(typeof(GetUsersPresenter));
+            services.AddScoped(typeof(GetUserByUserNamePresenter));
+
+            services.AddCors(options => {
+                options.AddPolicy(CORS, builder => {
+                    builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
 
             services.AddControllers();
 
@@ -56,6 +69,8 @@ namespace ImagesStorage.Api
             });
 
             app.UseRouting();
+
+            app.UseCors(CORS);
 
             app.UseAuthorization();
 
